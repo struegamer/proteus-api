@@ -46,6 +46,9 @@ class APIObject(object):
                 return TXTRecord(*args,**kwargs)
             if obj_type.lower()=='aliasrecord':
                 return CNAMERecord(*args,**kwargs)
+            if obj_type.lower()=='hinforecord':
+                return HINFORecord(*args,**kwargs)
+
         return None
 
     def __init__(self, *args, **kwargs):
@@ -109,3 +112,5 @@ class MXRecord(ProteusDataObjects):
 class CNAMERecord(ProteusDataObjects):
     pass
 
+class HINFORecord(ProteusDataObjects):
+    pass

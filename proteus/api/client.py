@@ -44,10 +44,11 @@ TYPE_HOSTRECORD='HostRecord'
 TYPE_MXRECORD='MXRecord'
 TYPE_TXTRECORD='TXTRecord'
 TYPE_CNAMERECORD='AliasRecord'
+TYPE_HINFORECORD='HINFORecord'
 TYPE_IP4BLOCK='IP4Block'
 
 
-DNS_ALLTYPES=[TYPE_ZONE,TYPE_HOSTRECORD,TYPE_MXRECORD,TYPE_TXTRECORD,TYPE_CNAMERECORD]
+DNS_ALLTYPES=[TYPE_ZONE,TYPE_HOSTRECORD,TYPE_MXRECORD,TYPE_TXTRECORD,TYPE_CNAMERECORD,TYPE_HINFORECORD]
 
 TYPES=(TYPE_CONFIGURATION,TYPE_VIEW,TYPE_ZONE,TYPE_HOSTRECORD,TYPE_IP4BLOCK)
 
@@ -170,92 +171,54 @@ class ProteusClient(ProteusClientApi):
                     return APIObject(TypeRecord=asdict(zone))
         return False
 
-    def get_host_record(self,hostname,view=None,view_name=None):
-        if self._configuration is None:
-            self._get_configuration()
+    def get_record(self,hostname,zonename,view=None,view_name=None,rec_type=TYPE_HOSTRECORD):
         if self.is_valid_connection():
+            if self._configuration is None:
+                self._get_configuration()
             if view is not None:
-                host_arr=hostname.split(".")
-                count=len(host_arr)
+                zone_arr=zonename.split(".")
+                count=len(zone_arr)
                 parent_id=view.id
             if view_name is not None:
                 view_rec=self.get_view(view_name)
-                host_arr=hostname.split('.')
-                count=len(host_arr)
+                zone_arr=zonename.split('.')
+                count=len(zone_arr)
                 parent_id=view_rec.id
- 
-            for i in reversed(host_arr):
-                if count != 1:
+            for i in reversed(zone_arr):
+                print i
+                print count
+                if count != 0:
                     zone=self.get_zone(i,parent_id)
-                    parent_id=zone.id
+                    if zone is not None:
+                        parent_id=zone.id
                 if count == 1:
-                    record=self._get_entity_by_name(parent_id,i,TYPE_HOSTRECORD)
+                    print zone.name
+                    record=self._get_entity_by_name(parent_id,hostname,rec_type)
                     if record is not None:
                         return APIObject(TypeRecord=asdict(record))
                     else:
                         return None
                 count=count-1
         return None
-        
-    def get_mx_record(self,hostname,view=None, view_name=None):
-        if self._configuration is None:
-            self._get_configuration()
-        if self.is_valid_connection():
-            host_arr=hostname.split('.')
-            count=len(host_arr)
-            parent_id=-1
-            if view is not None:
-                parent_id=view.id
-            if view_name is not None:
-                view_rec=self.get_view(view_name)
-                parent_id=view_rec.id
-            for i in reversed(host_arr):
-                if count != 1:
-                    zone=self.get_zone(i,parent_id)
-                    if zone is None:
-                        return None
-                    parent_id=zone.id
-                if count==1:
-                    record=self._get_entity_by_name(parent_id,i,TYPE_MXRECORD)
-                    if record is not None:
-                        return APIObject(TypeRecord=asdict(record))
-                    else:
-                        return none
-                count=count-1
-        return None
+ 
+    def get_host_record(self,hostname,zonename,view=None,view_name=None):
+        return self.get_record(hostname,zonename,view,view_name,TYPE_HOSTRECORD)
+    def get_mx_record(self,hostname,zonename,view=None,view_name=None):
+        return self.get_record(hostname,zonename,view,view_name,TYPE_MXRECORD)
+    def get_txt_record(self,hostname,zonename,view=None,view_name=None):
+        return self.get_record(hostname,zonename,view,view_name,TYPE_TXTRECORD)
+    def get_cname_record(self,hostname,zonename,view=None,view_name=None):
+        return self.get_record(hostname,zonename,view,view_name,TYPE_CNAMERECORD)
+    def get_hinfo_record(self,hostname,zonename,view=None,view_name=None):
+        return self.get_record(hostname,zonename,view,view_name,TYPE_HINFORECORD)
 
-    def get_txt_record(self,hostname,view=None, view_name=None):
-        if self._configuration is None:
-            self._get_configuration()
-        if self.is_valid_connection():
-            host_arr=hostname.split('.')
-            count=len(host_arr)
-            parent_id=-1
-            if view is not None:
-                parent_id=view.id
-            if view_name is not None:
-                view_rec=self.get_view(view_name)
-                parent_id=view_rec.id
-            for i in reversed(host_arr):
-                if count != 1:
-                    zone=self.get_zone(i,parent_id)
-                    if zone is None:
-                        return None
-                    parent_id=zone.id
-                if count==1:
-                    record=self._get_entity_by_name(parent_id,i,TYPE_TXTRECORD)
-                    if record is not None:
-                        return APIObject(TypeRecord=asdict(record))
-                    else:
-                        return none
-                count=count-1
-        return None
 
     def get_records_by_parent(self, zone=None,record_type=TYPE_ZONE):
         if self.is_valid_connection():
             if self._configuration is None:
                 self._get_configuration()
             if zone is not None:
+                print zone
                 records=self._get_entities(zone.id,record_type,0,9999999)
                 rec_list=[]
                 try:
@@ -278,7 +241,9 @@ class ProteusClient(ProteusClientApi):
         return self.get_records_by_parent(zone,TYPE_TXTRECORD)
     def get_cnames_by_parent(self,zone=None):
         return self.get_records_by_parent(zone,TYPE_CNAMERECORD)
-
+    
+    def get_hinfo_by_parent(self,zone=None):
+        return self.get_records_by_parent(zone,TYPE_HINFORECORD)
 
     def get_zone_list(self, zonename, view=None, view_name=None):
         if self._configuration is None:
@@ -295,8 +260,8 @@ class ProteusClient(ProteusClientApi):
                 parent_id=view_rec.id
  
             for i in reversed(zone_arr):
-                if count!=1:
-                    print count
+                print count
+                if count!=0:
                     zone=self.get_zone(i,parent_id)
                     if zone is None:
                         return None
