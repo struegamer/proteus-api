@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
-#################################################################################
-#
-#    python-proteus - Proteus IPAM Python Library
-#    Copyright (C) 2012  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+####################################################################
+###   python-proteus - Proteus IPAM Python Library
+###    Copyright (C) 2012 Stephan Adig <sh@sourcecode.de>
+###
+###   This library is free software; you can redistribute it and/or
+###   modify it under the terms of the GNU Lesser General Public
+###   License as published by the Free Software Foundation; either
+###   version 2.1 of the License, or (at your option) any later version.
+###
+###   This library is distributed in the hope that it will be useful,
+###   but WITHOUT ANY WARRANTY; without even the implied warranty of
+###   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+###   Lesser General Public License for more details.
+###   You should have received a copy of the GNU Lesser General Public
+###   License along with this library; if not, write to the Free Software
+###   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+####################################################################
 
 #################################################################################
-# 
-# Additional Copyright and Trademark Information
-# 
-# Proteus (tm) IP Addess Management (IPAM) 
-# is a product of BLUECAT Networks (tm) and is not OpenSource.
-# 
+### 
+### Additional Copyright and Trademark Information
+### 
+### Proteus (tm) IP Addess Management (IPAM) 
+### is a product of BLUECAT Networks (tm) and is not OpenSource.
+### 
 #################################################################################
 
 import sys
@@ -36,7 +35,7 @@ except ImportError,e:
     print "You don't have the python suds library installed."
     sys.exit(1)
 
-from dc2.lib.ipam.proteus.objects import APIObject
+from proteus.objects import *
 
 TYPE_CONFIGURATION='Configuration'
 TYPE_VIEW='View'
@@ -44,7 +43,7 @@ TYPE_ZONE='Zone'
 TYPE_HOSTRECORD='HostRecord'
 TYPE_MXRECORD='MXRecord'
 TYPE_TXTRECORD='TXTRecord'
-TYPE_CNAMERECORD='CName'
+TYPE_CNAMERECORD='AliasRecord'
 TYPE_IP4BLOCK='IP4Block'
 
 
@@ -64,8 +63,10 @@ class ProteusClientApi(object):
     def _connect(self):
         if self._client is not None:
             raise Exception('Disconnect first')
-        self._client=Client('%s?wsdl' % self._api_url)
-        self._client.set_options(location=self._api_url)
+        if self._api_url[:-1]!='/':
+            self._api_url+='/'
+        self._client=Client('%sServices/API?wsdl' % self._api_url)
+        self._client.set_options(location='%sServices/API' % self._api_url)
         self._is_connected=True
 
     def _disconnect(self):

@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
-#################################################################################
-#
-#    (dc)² - datacenter deployment control
-#    copyright (c) 2010, 2011, 2012  stephan adig <sh@sourcecode.de>
-#    this program is free software; you can redistribute it and/or modify
-#    it under the terms of the gnu general public license as published by
-#    the free software foundation; either version 2 of the license, or
-#    (at your option) any later version.
-#
-#    this program is distributed in the hope that it will be useful,
-#    but without any warranty; without even the implied warranty of
-#    merchantability or fitness for a particular purpose.  see the
-#    gnu general public license for more details.
-#
-#    you should have received a copy of the gnu general public license along
-#    with this program; if not, write to the free software foundation, inc.,
-#    51 franklin street, fifth floor, boston, ma 02110-1301 usa.
-#################################################################################
+####################################################################
+###   python-proteus - Proteus IPAM Python Library
+###    Copyright (C) 2012 Stephan Adig <sh@sourcecode.de>
+###
+###   This library is free software; you can redistribute it and/or
+###   modify it under the terms of the GNU Lesser General Public
+###   License as published by the Free Software Foundation; either
+###   version 2.1 of the License, or (at your option) any later version.
+###
+###   This library is distributed in the hope that it will be useful,
+###   but WITHOUT ANY WARRANTY; without even the implied warranty of
+###   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+###   Lesser General Public License for more details.
+###   You should have received a copy of the GNU Lesser General Public
+###   License along with this library; if not, write to the Free Software
+###   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+####################################################################
+
 
 import json
 
@@ -44,7 +44,7 @@ class APIObject(object):
                 return MXRecord(*args,**kwargs)
             if obj_type.lower()=='txtrecord':
                 return TXTRecord(*args,**kwargs)
-            if obj_type.lower()=='cname':
+            if obj_type.lower()=='aliasrecord':
                 return CNAMERecord(*args,**kwargs)
         return None
 
