@@ -1,2 +1,5 @@
 .eric4project
 *.e4p
+build
+dist
+*.egg-info
