@@ -17,18 +17,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 ###############################################################################
 
+import sys
+
+try:
+    from suds.sudsobject import asdict
+except ImportError, e:
+    print "You don't have the python suds library installed."
+    sys.exit(1)
+
 
 class APIObject(object):
+    """
+    Factory for creating the correct APIEntity Python Objects
+    """
     def __new__(cls, *args, **kwargs):
         _apientity = None
         obj_type = None
         if 'TypeRecord' in kwargs:
             _apientity = kwargs.get('TypeRecord', None)
-            if len(_apientity) == 0:
+            _apientity_dict = asdict(_apientity)
+            if len(_apientity_dict) == 0:
                 return None
-            obj_type = _apientity.get('type', None)
+            obj_type = _apientity_dict.get('type', None)
             del kwargs['TypeRecord']
         kwargs['data'] = _apientity
+        kwargs['data_dict'] = _apientity_dict
         if obj_type is not None:
             if obj_type.lower() == 'zone':
                 return Zone(*args, **kwargs)
@@ -81,8 +94,14 @@ class ProteusPropertyObject(object):
 class ProteusDataObjects(object):
     def __init__(self, *args, **kwargs):
         self._raw_data = None
+        self._raw_entity = None
+        self._client = None
+        if 'client' in kwargs:
+            self._client = kwargs.get('client', None)
         if 'data' in kwargs:
-            self._raw_data = kwargs.get('data', None)
+            self._raw_entity = kwargs.get('data', None)
+        if 'data_dict' in kwargs:
+            self._raw_data = kwargs.get('data_dict', None)
         if self._raw_data is not None:
             if 'properties' in self._raw_data:
                 self._raw_data['properties'] = ProteusPropertyObject(
@@ -96,6 +115,35 @@ class ProteusDataObjects(object):
     def __repr__(self):
         a = super(ProteusDataObjects, self).__repr__()
         return '%s | Members: %s' % (a, self._raw_data.keys())
+
+    def add(self, *args, **kwargs):
+        """
+        Adding records
+
+        *Overwrite this method*
+
+        """
+        pass
+
+    def update(self, *args, **kwargs):
+        """
+        Updating records
+
+        *Overwrite this method*
+
+        """
+
+        pass
+
+    def delete(self, *args, **kwargs):
+        """
+        Deleting records
+
+        *Overwrite this method*
+
+        """
+
+        pass
 
 
 class Zone(ProteusDataObjects):
@@ -111,7 +159,14 @@ class View(ProteusDataObjects):
 
 
 class HostRecord(ProteusDataObjects):
-    pass
+    def add(self, *args, **kwargs):
+        pass
+
+    def update(self, *args, **kwargs):
+        pass
+
+    def delete(self, *args, **kwargs):
+        pass
 
 
 class TXTRecord(ProteusDataObjects):

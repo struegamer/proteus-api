@@ -58,7 +58,7 @@ class DNS(object):
                 self._client._configuration.id,
                 view_name,
                 TYPE_VIEW)
-            return APIObject(TypeRecord=asdict(view))
+            return APIObject(TypeRecord=view, client=self._client)
         return None
 
     def get_views(self):
@@ -79,7 +79,7 @@ class DNS(object):
                 99999)
             view_arr = []
             for i in views.item:
-                view_arr.append(APIObject(TypeRecord=asdict(i)))
+                view_arr.append(APIObject(TypeRecord=i, client=self._client))
             return view_arr
         return None
 
@@ -105,7 +105,7 @@ class DNS(object):
                         view.id,
                         zone_name,
                         TYPE_ZONE)
-                    return APIObject(TypeRecord=asdict(zone))
+                    return APIObject(TypeRecord=zone, client=self._client)
                 elif view is None \
                     and view_name is not None \
                     and view_name != '':
@@ -114,7 +114,7 @@ class DNS(object):
                         view_rec.id,
                         zone_name,
                         TYPE_ZONE)
-                    return APIObject(TypeRecord=asdict(zone))
+                    return APIObject(TypeRecord=zone, client=self._client)
         return False
 
     def _get_record(
@@ -170,7 +170,7 @@ class DNS(object):
                         hostname,
                         rec_type)
                     if record is not None:
-                        return APIObject(TypeRecord=asdict(record))
+                        return APIObject(TypeRecord=record, client=self._client)
                     else:
                         return None
                 count = count - 1
@@ -237,7 +237,7 @@ class DNS(object):
                 rec_list = []
                 try:
                     for i in records.item:
-                        a = APIObject(TypeRecord=asdict(i))
+                        a = APIObject(TypeRecord=i, client=self._client)
                         if a is not None:
                             rec_list.append(a)
                     return rec_list

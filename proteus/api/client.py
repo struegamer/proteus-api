@@ -30,7 +30,6 @@ import sys
 
 try:
     from suds.client import Client
-    from suds.sudsobject import asdict
 except ImportError, e:
     print "You don't have the python suds library installed."
     sys.exit(1)
@@ -233,7 +232,7 @@ class ProteusClient(ProteusClientApi):
                     TYPE_CONFIGURATION
                 )
                 self._configuration = APIObject(
-                    TypeRecord=asdict(configuration))
+                    TypeRecord=configuration, client=self._client)
                 return True
             except Exception, e:
                 print e
