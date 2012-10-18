@@ -46,6 +46,8 @@ class APIObject(object):
                 return CNAMERecord(*args, **kwargs)
             if obj_type.lower() == 'hinforecord':
                 return HINFORecord(*args, **kwargs)
+            if obj_type.lower() == 'srvrecord':
+                return SRVRecord(*args, **kwargs)
 
         return None
 
@@ -125,4 +127,16 @@ class CNAMERecord(ProteusDataObjects):
 
 
 class HINFORecord(ProteusDataObjects):
+    pass
+
+
+class SRVRecord(ProteusDataObjects):
+    pass
+
+
+class SOARecord(ProteusDataObjects):
+    pass
+
+
+class DNSOptionsRecord(ProteusDataObjects):
     pass
