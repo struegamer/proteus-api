@@ -11,7 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
-   Proteus API Modules <modules>
+   Proteus API <proteus>
    Examples <examples>
 
 

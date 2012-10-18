@@ -1,7 +1,7 @@
-proteus
-=======
+Proteus API Module
+==================
 
 .. toctree::
    :maxdepth: 1
 
-   proteus
+   Proteus Module <proteus>

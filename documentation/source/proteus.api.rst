@@ -1,19 +1,14 @@
-api Package
-===========
+proteus.api Package
+===================
 
-:mod:`api` Package
-------------------
+.. toctree::
+   :maxdepth: 1
+
+   Client Module <proteus.api.client>
+   Constants Module <proteus.api.constants>
+   DNS module <proteus.api.dns>
+
 
 .. automodule:: proteus.api
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
-:mod:`client` Module
---------------------
-
-.. automodule:: proteus.api.client
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
