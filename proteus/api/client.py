@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-####################################################################
+###############################################################################
 ###   python-proteus - Proteus IPAM Python Library
 ###    Copyright (C) 2012 Stephan Adig <sh@sourcecode.de>
 ###
@@ -15,16 +15,16 @@
 ###   You should have received a copy of the GNU Lesser General Public
 ###   License along with this library; if not, write to the Free Software
 ###   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-####################################################################
+###############################################################################
 
-#################################################################################
-### 
+###############################################################################
+###
 ### Additional Copyright and Trademark Information
-### 
-### Proteus (tm) IP Addess Management (IPAM) 
+###
+### Proteus (tm) IP Addess Management (IPAM)
 ### is a product of BLUECAT Networks (tm) and is not OpenSource.
-### 
-#################################################################################
+###
+###############################################################################
 
 import sys
 
@@ -200,7 +200,7 @@ class ProteusClient(ProteusClientApi):
                         return None
                 count=count-1
         return None
- 
+
     def get_host_record(self,hostname,zonename,view=None,view_name=None):
         return self.get_record(hostname,zonename,view,view_name,TYPE_HOSTRECORD)
     def get_mx_record(self,hostname,zonename,view=None,view_name=None):
@@ -241,7 +241,7 @@ class ProteusClient(ProteusClientApi):
         return self.get_records_by_parent(zone,TYPE_TXTRECORD)
     def get_cnames_by_parent(self,zone=None):
         return self.get_records_by_parent(zone,TYPE_CNAMERECORD)
-    
+
     def get_hinfo_by_parent(self,zone=None):
         return self.get_records_by_parent(zone,TYPE_HINFORECORD)
 
@@ -258,7 +258,7 @@ class ProteusClient(ProteusClientApi):
                 count=len(zone_arr)
                 view_rec=self.get_view(view_name)
                 parent_id=view_rec.id
- 
+
             for i in reversed(zone_arr):
                 print count
                 if count!=0:
