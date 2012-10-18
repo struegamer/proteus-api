@@ -38,6 +38,7 @@ except ImportError, e:
 
 from constants import *
 from proteus.objects import *
+from dns import DNS
 
 
 class ProteusClientApi(object):
@@ -139,7 +140,7 @@ class ProteusClientApi(object):
             APIEntity
 
         """
-        if entity_type not in TYPES:
+        if entity_type not in ALL_TYPES:
             raise Exception("Unknown Entity Type")
         if self._is_connected:
             try:
@@ -220,6 +221,7 @@ class ProteusClient(ProteusClientApi):
         self._config_name = config_name
         self._configuration = None
         self._get_configuration()
+        self._dns = DNS(self)
 
     def _get_configuration(self):
         if self.is_valid_connection():
@@ -238,8 +240,8 @@ class ProteusClient(ProteusClientApi):
                 return False
         return False
 
-
-
-
+    def get_dns(self):
+        return self._dns
+    DNS = property(get_dns, doc='DNS Class Property')
 
 
