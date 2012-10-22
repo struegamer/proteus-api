@@ -6,3 +6,6 @@ dist
 *.pyc
 *.swp
 *.nja
+.project
+.pydevproject
+.settings/
