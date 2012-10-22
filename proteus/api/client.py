@@ -70,7 +70,7 @@ class ProteusClientApi(object):
         """
         if self._client is not None:
             raise Exception('Disconnect first')
-        if self._api_url[:-1] != '/':
+        if self._api_url[-1] != '/':
             self._api_url += '/'
         self._client = Client('%sServices/API?wsdl' % self._api_url)
         self._client.set_options(location='%sServices/API' % self._api_url)
@@ -243,4 +243,9 @@ class ProteusClient(ProteusClientApi):
         return self._dns
     DNS = property(get_dns, doc='DNS Class Property')
 
+    def get_configuration(self):
+        if self._configuration is None:
+            self._get_configuration()
+        return self._configuration
+    Configuration = property(get_configuration, doc='Configuration Property')
 
