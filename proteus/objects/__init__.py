@@ -19,3 +19,4 @@
 
 
 from apientity import APIObject
+from apientity import HostRecord

@@ -18,3 +18,5 @@
 ###############################################################################
 
 from api import ProteusClient
+from objects import HostRecord
+
